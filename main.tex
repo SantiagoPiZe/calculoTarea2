@@ -399,6 +399,19 @@ $\alpha$ & $x_0$ & Último $x$ & $|f'(x)|$ & Iteraciones & Estado & Clasificaci�
 
 Con $\alpha=0.01$ se obtuvieron los tres mínimos esperados en 108, 109 y 202 iteraciones. El valor $\alpha=0.05$ produjo las menores cantidades de iteraciones entre los valores probados, con 14, 14 y 31. Con $\alpha=0.10$, el caso $x_0=0.585$ necesitó 612 iteraciones. Cerca del mínimo $x\approx-0.471$ se tiene $f''(x)\approx19.777$, por lo que las aproximaciones oscilan y el residuo disminuye lentamente. Con $\alpha=0.20$ ninguno de los tres casos cumplió el criterio de residuo en 1000 iteraciones. Los residuos finales quedaron entre $3.851$ y $6.028$, por lo que esos valores no son puntos críticos.
 
+\subsection{Visualización de las aproximaciones}
+
+Ademas, se implementaron variantes auxiliares de los tres métodos que también devuelven la sucesión de aproximaciones. La Figura \ref{fig:bonus-parte3} muestra un caso representativo de cada método. Los colores oscuros corresponden a las primeras aproximaciones y los colores claros a las últimas.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figura_bonus_parte3.png}
+\caption{Sucesión de aproximaciones para bisección, Newton y descenso por gradiente.}
+\label{fig:bonus-parte3}
+\end{figure}
+
+En bisección se graficaron los 29 puntos medios generados en el intervalo $[-2,1]$. La sucesión termina cerca del máximo local $x=-1.782932473$. En Newton se incluyó el punto inicial y las seis aproximaciones posteriores. Desde $x_0=-1$ se observa el salto hacia la zona positiva y la convergencia al máximo $x=0.589531341$. En descenso por gradiente se incluyó el punto inicial y las 32 actualizaciones. Desde $x_0=4$ las aproximaciones avanzan hacia el mínimo local $x=1.407956578$.
+
 \subsection{Preguntas de la sección 3.3}
 
 \textbf{¿Los métodos funcionaron como se esperaba para las condiciones iniciales?}
