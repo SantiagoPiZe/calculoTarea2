@@ -61,7 +61,7 @@ Si existe un cambio de signo entre $a$ y $c$, el nuevo intervalo pasa a ser $[a,
 La implementación desarrollada recibe los siguientes parámetros:
 
 \begin{itemize}
-\item Función derivada $f'(x)$.
+\item Función $f(x)$, a partir de la cual se obtiene su derivada.
 \item Extremo izquierdo del intervalo inicial $a$.
 \item Extremo derecho del intervalo inicial $b$.
 \item Tolerancia.
@@ -89,8 +89,7 @@ Una de las principales ventajas de este método es su rápida convergencia cuand
 La implementación desarrollada recibe los siguientes parámetros:
 
 \begin{itemize}
-\item Primera derivada de la función $f'(x)$.
-\item Segunda derivada de la función $f''(x)$.
+\item Función $f(x)$, a partir de la cual se obtienen su primera y segunda derivada.
 \item Punto inicial $x_0$.
 \item Tolerancia.
 \item Número máximo de iteraciones.
@@ -118,7 +117,7 @@ Una ventaja de este método es que solamente requiere la primera derivada de la 
 La implementación desarrollada recibe los siguientes parámetros:
 
 \begin{itemize}
-\item Primera derivada de la función $f'(x)$.
+\item Función $f(x)$, a partir de la cual se obtiene su primera derivada.
 \item Punto inicial $x_0$.
 \item Tamaño de paso $\alpha$.
 \item Tolerancia.
@@ -146,9 +145,9 @@ El mínimo de esta función se encuentra en $x = 0$.
 Para verificar las implementaciones se utilizaron las siguientes condiciones iniciales:
 
 \begin{itemize}
-    \item Bisección: intervalo $[-5,\, 5]$.
-    \item Newton: $x_0 = 4$.
-    \item Descenso por gradiente: $x_0 = 4$, $\alpha = 0.1$.
+    \item Bisección: intervalo $[-1,\, 1]$.
+    \item Newton: $x_0 = 1$.
+    \item Descenso por gradiente: $x_0 = 1$, $\alpha = 0.01$.
 \end{itemize}
 
 Los resultados obtenidos fueron:
@@ -161,13 +160,13 @@ Método & Punto obtenido & Iteraciones \\
 \hline
 Bisección & $0.000000$ & 1  \\
 Newton    & $0.000000$ & 2  \\
-Gradiente & $0.000004$ & 62 \\
+Gradiente & $0.000048$ & 492 \\
 \hline
 \end{tabular}
 \caption{Resultados para $f(x)=x^2$.}
 \end{table}
 
-En los tres casos el punto encontrado es cercano a cero, por lo que los resultados son consistentes con el mínimo esperado. La bisección converge en una sola iteración porque el punto medio del intervalo $[-5,5]$ es exactamente $c=0$, donde la derivada se anula, satisfaciendo inmediatamente el criterio de parada.\\
+En los tres casos el punto encontrado es cercano a cero, por lo que los resultados son consistentes con el mínimo esperado. La bisección converge en una sola iteración porque el punto medio del intervalo $[-1,1]$ es exactamente $c=0$, donde la derivada se anula y se satisface inmediatamente el criterio de parada.\\
 
 \textbf{Función cúbica}
 
@@ -191,9 +190,9 @@ El primero corresponde a un máximo local y el segundo a un mínimo local.
 Para verificar las implementaciones se utilizaron las siguientes condiciones iniciales:
 
 \begin{itemize}
-\item Bisección: intervalo $[-1.5,\, -0.5]$.
-\item Newton: $x_0 = -1$.
-\item Descenso por gradiente: $x_0 = -1$, $\alpha = 0.1$.
+\item Bisección: intervalo $[-1,\, 1]$.
+\item Newton: $x_0 = 1$.
+\item Descenso por gradiente: $x_0 = 1$, $\alpha = 0.01$.
 \end{itemize}
 
 Los resultados obtenidos fueron:
@@ -204,39 +203,38 @@ Los resultados obtenidos fueron:
 \hline
 Método & Punto obtenido & Iteraciones \\
 \hline
-Bisección & $-1.077350$ & 20 \\
-Newton    & $-1.077350$ & 4  \\
-Gradiente & $\phantom{-}0.077349$ & 41 \\
+Bisección & $0.077350$ & 21  \\
+Newton    & $0.077350$ & 6   \\
+Gradiente & $0.077378$ & 278 \\
 \hline
 \end{tabular}
 \caption{Resultados para $f(x)=(x+\tfrac{1}{2})^3-(x+\tfrac{1}{2})$.}
 \end{table}
 
-Bisección y Newton convergieron hacia el máximo local en
+Los tres métodos convergieron hacia el punto crítico
 \[
-x = -\frac{1}{2} - \frac{1}{\sqrt{3}} \approx -1.07735,
+x = -\frac{1}{2} + \frac{1}{\sqrt{3}} \approx 0.07735.
 \]
-que coincide con uno de los extremos esperados de la función.
-El descenso por gradiente, en cambio, convergió al mínimo local en $x \approx 0.07735$. Esto se debe a que, partiendo de $x_0 = -1$, el gradiente apunta en la dirección de descenso hacia dicho mínimo y el método no puede escapar de esa cuenca de atracción. Este comportamiento ilustra que el descenso por gradiente siempre converge hacia un mínimo local, nunca hacia un máximo.\\
+Este punto corresponde a un mínimo local, ya que la segunda derivada es positiva. Por lo tanto, los resultados obtenidos son consistentes con uno de los extremos esperados de la función.\\
 
-\textbf{Función coseno}
+\textbf{Función coseno negativo}
 
 Se consideró la función
 \[
-f(x) = \cos(x),
+f(x) = -\cos(x),
 \]
 cuya derivada es
 \[
-f'(x) = -\sin(x).
+f'(x) = \sin(x).
 \]
 Los puntos críticos satisfacen $\sin(x) = 0$, por lo que $x = k\pi$ con $k \in \mathbb{Z}$.
 
-Debido a la naturaleza periódica de la función, el punto encontrado depende de la condición inicial seleccionada. Para verificar las implementaciones se utilizaron las siguientes condiciones iniciales, orientadas hacia el mínimo en $x = \pi$:
+Debido a la naturaleza periódica de la función, el punto encontrado depende de la condición inicial seleccionada. Para verificar las implementaciones se utilizaron las siguientes condiciones iniciales, orientadas hacia el mínimo en $x = 0$:
 
 \begin{itemize}
-\item Bisección: intervalo $[2,\, 4]$.
-\item Newton: $x_0 = 2$.
-\item Descenso por gradiente: $x_0 = 2$, $\alpha = 0.1$.
+\item Bisección: intervalo $[-1,\, 1]$.
+\item Newton: $x_0 = 1$.
+\item Descenso por gradiente: $x_0 = 1$, $\alpha = 0.01$.
 \end{itemize}
 
 Los resultados obtenidos fueron:
@@ -247,24 +245,24 @@ Los resultados obtenidos fueron:
 \hline
 Método & Punto obtenido & Iteraciones \\
 \hline
-Bisección & $3.141592$ & 20  \\
-Newton    & $3.141593$ & 6   \\
-Gradiente & $3.141584$ & 113 \\
+Bisección & $0.000000$ & 1   \\
+Newton    & $0.000000$ & 5   \\
+Gradiente & $0.000098$ & 927 \\
 \hline
 \end{tabular}
-\caption{Resultados para $f(x)=\cos(x)$.}
+\caption{Resultados para $f(x)=-\cos(x)$.}
 \end{table}
 
-En los tres casos el punto encontrado es cercano a $\pi \approx 3.141593$, que corresponde a un mínimo de $\cos(x)$. Los resultados son consistentes con el extremo esperado, lo que permite verificar el correcto funcionamiento de las implementaciones desarrolladas.
+En los tres casos el punto encontrado es cercano a cero. Este punto corresponde a un mínimo de $-\cos(x)$, ya que $f''(0)=\cos(0)=1>0$. Los resultados son consistentes con el extremo esperado, lo que permite verificar el correcto funcionamiento de las implementaciones desarrolladas.
 
 
 \subsection{Preguntas}
 
 \textbf{¿Pueden estos métodos diferenciar un máximo de un mínimo?}
 
-No necesariamente. Los tres métodos encuentran puntos donde la derivada es cero, es decir, puntos críticos, pero no distinguen por sí solos si se trata de un máximo o un mínimo. Para determinarlo es necesario analizar la segunda derivada: si $f''(x) > 0$ el punto es un mínimo local, y si $f''(x) < 0$ es un máximo local.
+No necesariamente. Los métodos de bisección y Newton encuentran puntos donde la derivada es cero, es decir, puntos críticos, pero no distinguen por sí solos si se trata de un máximo o un mínimo. Para determinarlo es necesario analizar la segunda derivada. Si $f''(x) > 0$ el punto es un mínimo local y si $f''(x) < 0$ es un máximo local.
 
-Cabe destacar que el descenso por gradiente, por su construcción, tiende a converger hacia mínimos locales. Esto se observó claramente en el caso de la función cúbica, donde el método convergió al mínimo local a pesar de que la condición inicial $x_0 = -1$ estaba más cerca del máximo local.\\
+El descenso por gradiente está construido para desplazarse en la dirección de disminución de la función. En las pruebas realizadas convergió hacia los mínimos esperados. Sin embargo, esto depende de la condición inicial y del valor de $\alpha$, ya que una elección inadecuada puede hacer que el método avance lentamente, oscile o no converja.\\
 \\
 \\
 
@@ -273,7 +271,7 @@ Cabe destacar que el descenso por gradiente, por su construcción, tiende a conv
 \textbf{Bisección}
 
 \begin{itemize}
-\item Ventaja: es sencillo, robusto y garantiza convergencia si existe un cambio de signo en el intervalo.
+\item Ventaja: es sencillo, robusto y garantiza convergencia hacia una raíz de la derivada si existe un cambio de signo en el intervalo.
 \item Desventaja: converge lentamente (de forma lineal) y requiere conocer un intervalo donde la derivada cambie de signo.
 \end{itemize}
 
@@ -288,13 +286,13 @@ Cabe destacar que el descenso por gradiente, por su construcción, tiende a conv
 
 \begin{itemize}
 \item Ventaja: sólo necesita la primera derivada de la función y es aplicable en contextos de alta dimensión.
-\item Desventaja: su convergencia depende fuertemente de la elección de $\alpha$; valores demasiado grandes pueden impedir la convergencia y valores demasiado pequeños hacen el proceso muy lento.
+\item Desventaja: su convergencia depende fuertemente de la elección de $\alpha$. Valores demasiado grandes pueden impedir la convergencia y valores demasiado pequeños hacen el proceso muy lento.
 \end{itemize}
 
 \subsection{Conclusiones}
 
-Los tres métodos permitieron encontrar correctamente los extremos de las funciones analizadas. El método de Newton fue el más rápido en cantidad de iteraciones gracias a su convergencia cuadrática, mientras que la bisección resultó ser el más robusto al garantizar convergencia dentro del intervalo dado. El descenso por gradiente también produjo resultados correctos, aunque en general requirió más iteraciones, y su comportamiento mostró ser sensible tanto al punto de partida como al valor del parámetro $\alpha$.
+Los tres métodos produjeron resultados consistentes con los mínimos esperados de las funciones analizadas. En cada caso se obtuvo un punto cercano a una raíz de la derivada y se verificó que correspondiera a un mínimo mediante el análisis de la segunda derivada.
 
-Un aspecto relevante observado es que el descenso por gradiente siempre converge hacia mínimos locales, lo que lo diferencia de los otros dos métodos y debe tenerse en cuenta al interpretar los resultados.
+La bisección encontró la solución en una sola iteración cuando el punto crítico coincidía con el punto medio del intervalo. Newton también alcanzó los puntos esperados en pocas iteraciones. El descenso por gradiente necesitó una mayor cantidad de iteraciones con el valor de $\alpha$ utilizado, pero produjo aproximaciones coherentes. Estos resultados permiten comprobar el correcto funcionamiento de las implementaciones.
 
 \end{document}
