@@ -5,6 +5,7 @@
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 
 \title{Tarea 2}
 
@@ -294,5 +295,145 @@ El descenso por gradiente está construido para desplazarse en la dirección de 
 Los tres métodos produjeron resultados consistentes con los mínimos esperados de las funciones analizadas. En cada caso se obtuvo un punto cercano a una raíz de la derivada y se verificó que correspondiera a un mínimo mediante el análisis de la segunda derivada.
 
 La bisección encontró la solución en una sola iteración cuando el punto crítico coincidía con el punto medio del intervalo. Newton también alcanzó los puntos esperados en pocas iteraciones. El descenso por gradiente necesitó una mayor cantidad de iteraciones con el valor de $\alpha$ utilizado, pero produjo aproximaciones coherentes. Estos resultados permiten comprobar el correcto funcionamiento de las implementaciones.
+
+\section{Aplicación a una función no trivial}
+
+\subsection{Función de estudio}
+
+Se estudió la función
+\[
+f(x)=x^2+2\sin(3x).
+\]
+Sus primeras dos derivadas son
+\[
+f'(x)=2x+6\cos(3x)
+\]
+y
+\[
+f''(x)=2-18\sin(3x).
+\]
+
+La Figura \ref{fig:funcion-no-trivial} muestra la función en el intervalo $[-3,5]$. En este intervalo se observan varios extremos locales, por lo que la condición inicial puede cambiar el punto al que llega cada método.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{figura_parte3.png}
+\caption{Gráfica de $f(x)=x^2+2\sin(3x)$ en el intervalo $[-3,5]$.}
+\label{fig:funcion-no-trivial}
+\end{figure}
+
+\subsection{Predicciones}
+
+Las siguientes predicciones se formularon antes de ejecutar los algoritmos, utilizando la gráfica, el signo de $f'$ en puntos relevantes y la dirección del primer paso de cada método. Por este motivo son cualitativas; las aproximaciones numéricas se presentan recién en la sección de resultados.
+
+\textbf{Bisección}
+
+En el intervalo $[-2,1]$ hay más de un punto crítico. El primer punto medio es $-0.5$ y, como $f'(-2)>0$ y $f'(-0.5)<0$, se supone que las primeras subdivisiones conservarían la parte negativa del intervalo y llevarían al máximo local visible. En $[-1,0]$, $f'$ cambia de negativa a positiva, por lo que se espera encontrar un mínimo local dentro del intervalo. En $[1,2]$ ocurre el mismo cambio de signo y espera también un mínimo local.
+
+\textbf{Newton}
+
+Desde $x_0=-2$ esperamos que la convergencia al máximo local próximo se observa en la zona negativa. Desde $x_0=-1$, el signo y la magnitud del primer paso llevan la aproximación hacia la zona positiva, por lo que se esperó llegar al máximo local visible en esa región. Desde $x_0=4$ no se esperó una convergencia confiable, ya que el punto está lejos de los extremos visibles y la curvatura cambia durante las iteraciones.
+
+\textbf{Descenso por gradiente}
+
+Para la comparación principal se utilizó $\alpha=0.05$. Como $f'(-3)<0$, desde $x_0=-3$ el primer paso avanza hacia la derecha y se espera una convergencia al primer mínimo local visible. El valor $x_0=0.585$ se encuentra apenas a la izquierda de un máximo y tiene derivada positiva, por lo que el descenso comienza hacia la izquierda. Como $f'(4)>0$, desde $x_0=4$ el método también comienza hacia la izquierda y se supone una convergencia al mínimo local visible en la zona positiva.
+
+\subsection{Resultados}
+
+Después de ejecutar cada método con las condiciones iniciales indicadas, se obtuvieron los resultados de la Tabla \ref{tab:resultados-parte3}. Los métodos se ejecutaron con tolerancia interna $10^{-8}$ y un máximo de 1000 iteraciones. Además, un resultado sólo se consideró convergente cuando terminó antes del máximo de iteraciones y cumplió $|f'(x)|<10^{-6}$. La clasificación se realizó evaluando el signo de $f''$ en cada aproximación convergente.
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrrlll}
+\hline
+Método & Condición & Predicción & Aproximación & Iteraciones & $|f'(x)|$ & Estado & Clasificación \\
+\hline
+Bisección & $[-2,1]$ & Máximo local en la zona negativa & $-1.782932473$ & 29 & $2.345\cdot10^{-8}$ & Converge & Máximo local \\
+Bisección & $[-1,0]$ & Mínimo local dentro del intervalo & $-0.471043177$ & 27 & $1.198\cdot10^{-7}$ & Converge & Mínimo local \\
+Bisección & $[1,2]$ & Mínimo local dentro del intervalo & $1.407956578$ & 27 & $2.235\cdot10^{-8}$ & Converge & Mínimo local \\
+Newton & $x_0=-2$ & Máximo local próximo al inicio & $-1.782932475$ & 6 & $8.882\cdot10^{-16}$ & Converge & Máximo local \\
+Newton & $x_0=-1$ & Máximo local en la zona positiva & $0.589531341$ & 6 & $6.661\cdot10^{-16}$ & Converge & Máximo local \\
+Newton & $x_0=4$ & No se espera convergencia & $7.820891884$ & 1000 & $1.505\cdot10^{1}$ & No converge & No corresponde \\
+Gradiente & $x_0=-3$, $\alpha=0.05$ & Mínimo local hacia la derecha & $-2.322807411$ & 16 & $5.333\cdot10^{-8}$ & Converge & Mínimo local \\
+Gradiente & $x_0=0.585$, $\alpha=0.05$ & Mínimo local hacia la izquierda & $-0.471043171$ & 15 & $4.856\cdot10^{-10}$ & Converge & Mínimo local \\
+Gradiente & $x_0=4$, $\alpha=0.05$ & Mínimo local hacia la izquierda & $1.407956578$ & 32 & $1.664\cdot10^{-8}$ & Converge & Mínimo local \\
+\hline
+\end{tabular}
+}
+\caption{Resultados de los métodos para $f(x)=x^2+2\sin(3x)$.}
+\label{tab:resultados-parte3}
+\end{table}
+
+Bisección y descenso por gradiente coincidieron con todas las predicciones. Newton también tuvo el comportamiento previsto. Desde $x_0=4$ alcanzó el máximo de iteraciones con residuo $|f'(x)|\approx15.047$. El último valor devuelto no es un punto crítico, aunque el método siempre devuelve una aproximación al finalizar.
+
+\subsection{Comparación de learning rates}
+
+Se probaron cuatro valores de $\alpha$ con las tres condiciones iniciales del descenso por gradiente. Para que la comparación fuera válida se utilizó una variante con la misma actualización del método original, pero con el criterio común $|f'(x_{k+1})|<10^{-6}$. De esta manera la tolerancia no depende del tamaño del learning rate.
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ccrrrll}
+\hline
+$\alpha$ & $x_0$ & Último $x$ & $|f'(x)|$ & Iteraciones & Estado & Clasificación \\
+\hline
+0.01 & $-3$ & $-2.322807474$ & $8.896\cdot10^{-7}$ & 108 & Converge & Mínimo local \\
+0.01 & $0.585$ & $-0.471043124$ & $9.215\cdot10^{-7}$ & 109 & Converge & Mínimo local \\
+0.01 & $4$ & $1.407956628$ & $9.289\cdot10^{-7}$ & 202 & Converge & Mínimo local \\
+0.05 & $-3$ & $-2.322807444$ & $4.884\cdot10^{-7}$ & 14 & Converge & Mínimo local \\
+0.05 & $0.585$ & $-0.471043169$ & $4.350\cdot10^{-8}$ & 14 & Converge & Mínimo local \\
+0.05 & $4$ & $1.407956585$ & $1.581\cdot10^{-7}$ & 31 & Converge & Mínimo local \\
+0.10 & $-3$ & $-2.322807438$ & $4.126\cdot10^{-7}$ & 17 & Converge & Mínimo local \\
+0.10 & $0.585$ & $-0.471043221$ & $9.985\cdot10^{-7}$ & 612 & Converge & Mínimo local \\
+0.10 & $4$ & $1.407956531$ & $8.106\cdot10^{-7}$ & 63 & Converge & Mínimo local \\
+0.20 & $-3$ & $0.337657079$ & $3.851$ & 1000 & No converge & No corresponde \\
+0.20 & $0.585$ & $0.289579873$ & $4.454$ & 1000 & No converge & No corresponde \\
+0.20 & $4$ & $0.018374947$ & $6.028$ & 1000 & No converge & No corresponde \\
+\hline
+\end{tabular}
+}
+\caption{Comparación de learning rates para descenso por gradiente.}
+\label{tab:learning-rates}
+\end{table}
+
+Con $\alpha=0.01$ se obtuvieron los tres mínimos esperados en 108, 109 y 202 iteraciones. El valor $\alpha=0.05$ produjo las menores cantidades de iteraciones entre los valores probados, con 14, 14 y 31. Con $\alpha=0.10$, el caso $x_0=0.585$ necesitó 612 iteraciones. Cerca del mínimo $x\approx-0.471$ se tiene $f''(x)\approx19.777$, por lo que las aproximaciones oscilan y el residuo disminuye lentamente. Con $\alpha=0.20$ ninguno de los tres casos cumplió el criterio de residuo en 1000 iteraciones. Los residuos finales quedaron entre $3.851$ y $6.028$, por lo que esos valores no son puntos críticos.
+
+\subsection{Preguntas de la sección 3.3}
+
+\textbf{¿Los métodos funcionaron como se esperaba para las condiciones iniciales?}
+
+Sí. Ocho casos convergieron a los puntos previstos y el caso restante tuvo la falta de convergencia esperada. El resultado más sensible fue Newton desde $x_0=4$, que terminó en $x=7.820891884$ con residuo $15.047146$. También se observó que un intervalo de bisección puede contener varios puntos críticos. En ese caso el resultado depende de las subdivisiones que produce el algoritmo.
+
+\textbf{¿Cómo se puede usar descenso por gradiente para obtener máximos sin cambiar el algoritmo?}
+
+Se puede aplicar el mismo algoritmo a la función $-f$. Un mínimo de $-f$ corresponde a un máximo de $f$. La Tabla \ref{tab:maximos-parte3} muestra el experimento con $\alpha=0.05$ y criterio de residuo $10^{-6}$.
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{crrrrll}
+\hline
+$x_0$ & Último $x$ & $f(x)$ & $|f'(x)|$ & Iteraciones & Estado & Clasificación para $f$ \\
+\hline
+$-3$ & $-4.780552\cdot10^8$ & $2.285368\cdot10^{17}$ & $9.561\cdot10^8$ & 200 & No converge & No corresponde \\
+$0.585$ & $0.589531319$ & $2.308551$ & $3.533\cdot10^{-7}$ & 8 & Converge & Máximo local \\
+$4$ & $7.272879\cdot10^8$ & $5.289477\cdot10^{17}$ & $1.455\cdot10^9$ & 200 & No converge & No corresponde \\
+\hline
+\end{tabular}
+}
+\caption{Descenso por gradiente aplicado a $-f$ para buscar máximos de $f$.}
+\label{tab:maximos-parte3}
+\end{table}
+
+Desde $x_0=0.585$ se obtuvo $x=0.589531319$ en 8 iteraciones, con residuo $3.533\cdot10^{-7}$. Este punto es un máximo local de $f$ porque $f''(0.589531319)<0$.
+
+\textbf{¿Hay riesgo de que no converja la búsqueda de máximos?}
+
+Sí. La función $f(x)=x^2+2\sin(3x)$ no está acotada superiormente cuando aumenta $|x|$. En consecuencia, $-f$ no está acotada inferiormente. Desde $x_0=-3$ y $x_0=4$ las aproximaciones alcanzaron magnitudes cercanas a $4.78\cdot10^8$ y $7.27\cdot10^8$ después de 200 iteraciones. Los residuos fueron del orden de $10^9$. Esto muestra que el método puede alejarse de los máximos locales y divergir.
+
+\subsection{Conclusión}
+
+Los experimentos muestran que la condición inicial y los parámetros del método son importantes cuando una función tiene varios extremos locales. Bisección fue estable en los intervalos elegidos y Newton fue rápido cuando convergió. El descenso por gradiente encontró los mínimos esperados con $\alpha=0.05$, mientras que $\alpha=0.20$ produjo inestabilidad. La búsqueda de máximos mediante $-f$ funcionó cerca de un máximo local, pero también mostró riesgo de divergencia debido al crecimiento de la función.
 
 \end{document}
